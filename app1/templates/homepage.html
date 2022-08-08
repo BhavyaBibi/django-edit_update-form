@@ -13,6 +13,14 @@
 <body>
     <div class="container">
         <div class="row">
+            <div class="col-lg-6">
+                <button class="btn btn-block btn-success id=" insert-btn">Insert</button>
+            </div>
+            <div class="col-lg-6">
+                <button class="btn btn-block btn-success id=" update-btn">Edit ALL</button>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="table">
                     <table class="table">
@@ -30,6 +38,8 @@
                             <td>{{ student.email }}</td>
                         <tr>{{ student.Gender}}<td>
                             <td>{{ student.created_at }}</td>
+                            <td> <button class="btn btn-block btn-success id=" update-btn">Edit ALL</button>
+
                             </td>
                         </tr>
                         {% endfor %}
