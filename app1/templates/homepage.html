@@ -83,7 +83,7 @@
                         </div>
                         <div class="form-group">
                             <label for="Gender">Gender:</label>
-                            <select name="gender " class="form-control" id ="ins_gender">
+                            <select name="gender " class="form-control" id="ins_gender">
                                 <option>Male</option>
                                 <option>Female</option>
                             </select>
@@ -94,12 +94,12 @@
                                 value="INSERT STUDENT">
                         </div>
                         <div class="form-group">
-                           <div class="alert alert-success" id="ins_sucess" style="display: none;">
+                            <div class="alert alert-success" id="ins_sucess" style="display: none;">
 
-                           </div>
-                           <div class="alert alert-danger" id ="ins_error" style="display: none;">
-                            
-                        </div>
+                            </div>
+                            <div class="alert alert-danger" id="ins_error" style="display: none;">
+
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -112,11 +112,39 @@
 
         <script>
             $(".btn-insert-data").click(function () {
-                console.log($('#ins_name').val());
-                console.log($('#ins_email').val());
-                console.log($('#ins_gender').val());
+                var name = $('#ins_name').val();
+                var email = $('#ins_email').val();
 
+                var gender = $('#ins_gender').val();
+                if (name == "") {
+
+                    $("#ins_error").text("Please Enter Name")
+                    $("#ins_error").show()
+                    return;
+                }
+                else if (email == "") {
+                    $("#ins_error").text("Please Enter Email")
+                    $("#ins_error").show()
+                    return;
+                }
+                else{
+                    $.ajax({
+                url:'{% url 'insert' %}',
+                type:'POST',
+                data:{name:name,email:email,gender:gender}
             })
+            .done(function(response){
+                console.log(response)
+
+
+
+
+                })
+                .fail(function(response){
+                    console.log(error())
+                })
+                }
+
         </script>
 </body>
 

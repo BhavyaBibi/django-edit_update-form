@@ -21,5 +21,7 @@ from app1 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomePage, name='home'),
+    path('/insert_student', views.InsertStudent,name="insert"),
+
 
 ]
