@@ -1,6 +1,9 @@
 from django.shortcuts import render
-
+from app1.models import StudentData
 
 # Create your views here.
+
+
 def HomePage(request):
-    return  render(request,'homepage.html')
+    students = StudentData.objects.all()
+    return render(request, 'homepage.html', {'students': students})
