@@ -75,22 +75,23 @@
 
                         <div class="form-group">
                             <label for="name">Name:</label>
-                            <input type="text" class="form-control" name="name" placeholder="Name">
+                            <input type="text" class="form-control" name="name" id="ins_name" placeholder="Name">
                         </div>
                         <div class="form-group">
                             <label for="Email">Email:</label>
-                            <input type="text" class="form-control" name="email" placeholder="Email">
+                            <input type="text" class="form-control" name="email" id="ins_email" placeholder="Email">
                         </div>
                         <div class="form-group">
                             <label for="Gender">Gender:</label>
-                            <select name="gender " class="form-control">
+                            <select name="gender " class="form-control" id ="ins_gender">
                                 <option>Male</option>
                                 <option>Female</option>
                             </select>
 
                         </div>
                         <div class="form-group">
-                            <input type="submit" name="submit" class="btn btn-block btn-info" value="INSERT STUDENT">
+                            <input type="submit" name="submit" class="btn btn-block btn-info btn-insert-data"
+                                value="INSERT STUDENT">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -100,6 +101,15 @@
 
             </div>
         </div>
+
+        <script>
+            $(".btn-insert-data").click(function () {
+                console.log($('#ins_name').val());
+                console.log($('#ins_email').val());
+                console.log($('#ins_gender').val());
+                
+            })
+        </script>
 </body>
 
 </html>
