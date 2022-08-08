@@ -93,6 +93,14 @@
                             <input type="submit" name="submit" class="btn btn-block btn-info btn-insert-data"
                                 value="INSERT STUDENT">
                         </div>
+                        <div class="form-group">
+                           <div class="alert alert-success" id="ins_sucess" style="display: none;">
+
+                           </div>
+                           <div class="alert alert-danger" id ="ins_error" style="display: none;">
+                            
+                        </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -107,7 +115,7 @@
                 console.log($('#ins_name').val());
                 console.log($('#ins_email').val());
                 console.log($('#ins_gender').val());
-                
+
             })
         </script>
 </body>
