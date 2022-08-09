@@ -47,3 +47,19 @@ def update_all(request):
     except:
         stuent_data = {"error": True, "errorMessage": "Failed to Update Data"}
         return JsonResponse(stuent_data, safe=False)
+
+@csrf_exempt
+def delete_data(request):
+    id =request.POST.get('data')
+    try:
+        student=StudentData.objects.get(id=id)
+        student.delete()
+        stuent_data = {"error": False,
+            "errorMessage": "Deleted Successfully"}
+        return JsonResponse(stuent_data, safe=False)
+
+    except:
+        stuent_data = {"error": True, "errorMessage": "Failed to Delete Data"}
+        return JsonResponse(stuent_data, safe=False)
+    
+
