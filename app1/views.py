@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from app1.models import StudentData
+from django.http import HttpResponse, JsonResponse
+
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
