@@ -2,6 +2,7 @@ from django.shortcuts import render
 from app1.models import StudentData
 
 # Create your views here.
+from django.views.decorators.csrf import csrf_exempt
 
 
 def HomePage(request):

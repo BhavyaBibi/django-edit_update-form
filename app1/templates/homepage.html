@@ -112,12 +112,11 @@
 
         <script>
             $(".btn-insert-data").click(function () {
-                var name = $('#ins_name').val();
-                var email = $('#ins_email').val();
 
-                var gender = $('#ins_gender').val();
+                var name = $("#ins_name").val();
+                var email = $("#ins_email").val();
+                var gender = $("#ins_gender").val();
                 if (name == "") {
-
                     $("#ins_error").text("Please Enter Name")
                     $("#ins_error").show()
                     return;
@@ -127,24 +126,40 @@
                     $("#ins_error").show()
                     return;
                 }
-                else{
+                else {
+                    $(".btn-insert-data").attr("disabled", "disabled");
+                    $(".btn-insert-data").text("Inserting... Please Wait..");
                     $.ajax({
-                url:'{% url 'insert' %}',
-                type:'POST',
-                data:{name:name,email:email,gender:gender}
-            })
-            .done(function(response){
-                console.log(response)
+                        url: '{% url 'insert' %}',
+                        type: 'POST',
+                        data: { name: name, email: email, gender: gender }
+                    })
+                        .done(function (response) {
+                            if (response['error'] == false) {
+                                $("#ins_error").hide();
+                                $("#ins_success").text(response['errorMessage']);
+                                $("#ins_success").show();
+                                var html_data = "<tr><td>" + response['id'] + "</td><td class='editable' data-type='name'>" + name + "</td><td class='editable' data-type='email'>" + email + "</td><td class='editable' data-type='gender'>" + gender + "</td><td>" + response['created_at'] + "</td><td class='btn-td-block'><button class='btn btn-block btn-delete btn-danger'>DELETE</button></td></tr>";
+                                $(".table tbody").append(html_data);
+                            }
+                            else {
+                                $("#ins_success").hide();
+                                $("#ins_error").text(response['errorMessage']);
+                                $("#ins_error").show();
+                            }
+                        })
+                        .fail(function () {
+                            $("#ins_success").hide();
+                            $("#ins_error").text("Something Went Wrong!");
+                            $("#ins_error").show();
+                        })
+                        .always(function () {
+                            $(".btn-insert-data").removeAttr("disabled");
+                            $(".btn-insert-data").text("INSERT STUDENT");
+                        })
 
-
-
-
-                })
-                .fail(function(response){
-                    console.log(error())
-                })
                 }
-
+            })
         </script>
 </body>
 
