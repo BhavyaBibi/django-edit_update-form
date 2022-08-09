@@ -33,134 +33,137 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="table">
                     <table class="table">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Created at</th>
-                        </tr>
-                        {% for student in students %}
-                        <tr>
-                            <td>{{ student.id }}</td>
-                            <td>{{ student.name }}</td>
-                            <td>{{ student.email }}</td>
-                        <tr>{{ student.Gender}}<td>
-                            <td>{{ student.created_at }}</td>
-                            <td> <button class="btn btn-block btn-success id=" update-btn">Edit ALL</button>
-
-                            </td>
-                        </tr>
-                        {% endfor %}
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.id }}</td>
+                                <td class="editable" data-type="name">{{ student.name }}</td>
+                                <td class="editable" data-type="email">{{ student.email }}</td>
+                                <td class="editable" data-type="gender">{{ student.gender }}</td>
+                                <td>{{ student.created_at }}</td>
+                                <td class="btn-td-block"><button
+                                        class="btn btn-block btn-delete btn-danger">DELETE</button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Modal -->
+    <div id="insert_data" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-        <!-- Modal -->
-        <div id="insert_data" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Insert Student</h4>
-                    </div>
-                    <div class="modal-body">
-
-
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" class="form-control" name="name" id="ins_name" placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <label for="Email">Email:</label>
-                            <input type="text" class="form-control" name="email" id="ins_email" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <label for="Gender">Gender:</label>
-                            <select name="gender " class="form-control" id="ins_gender">
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" name="submit" class="btn btn-block btn-info btn-insert-data"
-                                value="INSERT STUDENT">
-                        </div>
-                        <div class="form-group">
-                            <div class="alert alert-success" id="ins_sucess" style="display: none;">
-
-                            </div>
-                            <div class="alert alert-danger" id="ins_error" style="display: none;">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+                    <h4 class="modal-title">Insert Student</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
+                <div class="modal-body">
 
+                    <div class="form-group">
+                        <label>Name : </label>
+                        <input type="text" name="name" id="ins_name" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email : </label>
+                        <input type="text" name="email" id="ins_email" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender : </label>
+                        <select name="gender" class="form-control" id="ins_gender">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" name="submit" class="btn btn-block btn-info btn-insert-data"
+                            value="INSERT STUDENT">
+                    </div>
+                    <div class="form-group">
+                        <div class="alert alert-success" id="ins_success" style="display:none">
+
+                        </div>
+                        <div class="alert alert-danger" id="ins_error" style="display:none">
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
+
         </div>
+    </div>
+    <script>
+        $(".btn-insert-data").click(function () {
 
-        <script>
-            $(".btn-insert-data").click(function () {
-
-                var name = $("#ins_name").val();
-                var email = $("#ins_email").val();
-                var gender = $("#ins_gender").val();
-                if (name == "") {
-                    $("#ins_error").text("Please Enter Name")
-                    $("#ins_error").show()
-                    return;
-                }
-                else if (email == "") {
-                    $("#ins_error").text("Please Enter Email")
-                    $("#ins_error").show()
-                    return;
-                }
-                else {
-                    $(".btn-insert-data").attr("disabled", "disabled");
-                    $(".btn-insert-data").text("Inserting... Please Wait..");
-                    $.ajax({
-                        url: '{% url 'insert' %}',
-                        type: 'POST',
-                        data: { name: name, email: email, gender: gender }
-                    })
-                        .done(function (response) {
-                            if (response['error'] == false) {
-                                $("#ins_error").hide();
-                                $("#ins_success").text(response['errorMessage']);
-                                $("#ins_success").show();
-                                var html_data = "<tr><td>" + response['id'] + "</td><td class='editable' data-type='name'>" + name + "</td><td class='editable' data-type='email'>" + email + "</td><td class='editable' data-type='gender'>" + gender + "</td><td>" + response['created_at'] + "</td><td class='btn-td-block'><button class='btn btn-block btn-delete btn-danger'>DELETE</button></td></tr>";
-                                $(".table tbody").append(html_data);
-                            }
-                            else {
-                                $("#ins_success").hide();
-                                $("#ins_error").text(response['errorMessage']);
-                                $("#ins_error").show();
-                            }
-                        })
-                        .fail(function () {
+            var name = $("#ins_name").val();
+            var email = $("#ins_email").val();
+            var gender = $("#ins_gender").val();
+            if (name == "") {
+                $("#ins_error").text("Please Enter Name")
+                $("#ins_error").show()
+                return;
+            }
+            else if (email == "") {
+                $("#ins_error").text("Please Enter Email")
+                $("#ins_error").show()
+                return;
+            }
+            else {
+                $(".btn-insert-data").attr("disabled", "disabled");
+                $(".btn-insert-data").text("Inserting... Please Wait..");
+                $.ajax({
+                    url: '{% url 'insert' %}',
+                    type: 'POST',
+                    data: { name: name, email: email, gender: gender }
+                })
+                    .done(function (response) {
+                        if (response['error'] == false) {
+                            $("#ins_error").hide();
+                            $("#ins_success").text(response['errorMessage']);
+                            $("#ins_success").show();
+                            var html_data = "<tr><td>" + response['id'] + "</td><td class='editable' data-type='name'>" + name + "</td><td class='editable' data-type='email'>" + email + "</td><td class='editable' data-type='gender'>" + gender + "</td><td>" + response['created_at'] + "</td><td class='btn-td-block'><button class='btn btn-block btn-delete btn-danger'>DELETE</button></td></tr>";
+                            $(".table tbody").append(html_data);
+                        }
+                        else {
                             $("#ins_success").hide();
-                            $("#ins_error").text("Something Went Wrong!");
+                            $("#ins_error").text(response['errorMessage']);
                             $("#ins_error").show();
-                        })
-                        .always(function () {
-                            $(".btn-insert-data").removeAttr("disabled");
-                            $(".btn-insert-data").text("INSERT STUDENT");
-                        })
+                        }
+                    })
+                    .fail(function () {
+                        $("#ins_success").hide();
+                        $("#ins_error").text("Something Went Wrong!");
+                        $("#ins_error").show();
+                    })
+                    .always(function () {
+                        $(".btn-insert-data").removeAttr("disabled");
+                        $(".btn-insert-data").text("INSERT STUDENT");
+                    })
 
-                }
-            })
-        </script>
+            }
+        })
+    </script>
 </body>
 
 </html>
