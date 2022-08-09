@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from app1.models import StudentData
 from django.http import HttpResponse, JsonResponse
@@ -26,4 +27,23 @@ def InsertStudent(request):
 
     except:
         stuent_data = {"error": True, "errorMessage": "Failed to Add Student"}
+        return JsonResponse(stuent_data, safe=False)
+
+
+@csrf_exempt
+def update_all(request):
+    data = request.POST.get('data')
+    dict_data = json.loads(data)
+    try:
+        for dic_single in dict_data:
+            student = StudentData.objects.get(id=dic_single['id'])
+            student.name = dic_single['name']
+            student.email = dic_single['email']
+            student.gender = dic_single['gender']
+            student.save()
+            stuent_data = {"error": False,
+                           "errorMessage": "Updated Successfully"}
+            return JsonResponse(stuent_data, safe=False)
+    except:
+        stuent_data = {"error": True, "errorMessage": "Failed to Update Data"}
         return JsonResponse(stuent_data, safe=False)
