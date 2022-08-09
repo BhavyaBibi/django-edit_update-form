@@ -189,6 +189,91 @@
                 }
             });
         });
+        $("#save_all_btn").click(function () {
+            $("#save_all_btn").attr("disabled", "disabled");
+            $("#save_all_btn").text("Saving Data....");
+
+            var json_data = [];
+            $(".input_data").each(function () {
+                var value = $(this).val();
+                var parent_html = $(this).parent();
+                parent_html.html(value);
+                $(this).remove();
+            });
+            $("tbody tr").each(function () {
+                var id = $(this).children().eq(0).text()
+                var name = $(this).children().eq(1).text()
+                var email = $(this).children().eq(2).text()
+                var gender = $(this).children().eq(3).text()
+
+                var single_data = { "id": id, "name": name, "email": email, "gender": gender };
+                json_data.push(single_data);
+            });
+
+            var string_data = JSON.stringify(json_data)
+            $.ajax({
+                url: '{% url 'update_all' %}',
+                type: 'POST',
+                data: { data: string_data }
+            })
+                .done(function (response) {
+                    if (response['error'] == false) {
+                        $("#upt_error").hide();
+                        $("#upt_success").text(response['errorMessage']);
+                        $("#upt_success").show();
+
+                    }
+                    else {
+                        $("#upt_success").hide();
+                        $("#upt_error").text(response['errorMessage']);
+                        $("#upt_error").show();
+                    }
+                })
+                .fail(function () {
+                    $("#upt_success").hide();
+                    $("#upt_error").text("Something Went Wrong!");
+                    $("#upt_error").show();
+                })
+                .always(function () {
+                    $("#save_all_btn").removeAttr("disabled");
+                    $("#save_all_btn").text("SAVE ALL");
+                    $("#update_btn").show();
+                    $("#save_all_btn").hide();
+                })
+
+        });
+
+        $(document).on("click", ".btn-delete", function () {
+            var this_html = $(this);
+            this_html.attr("disabled", "disabled");
+            this_html.text("DELETING....");
+            var id = this_html.parent().parent().children().first().text();
+            //console.log(id);
+            $.ajax({
+                url: '{% url 'delete_data' %}',
+                type: 'POST',
+                data: { id: id }
+            })
+                .done(function (response) {
+                    if (response['error'] == false) {
+                        this_html.parent().parent().remove();
+                        $("#upt_error").hide();
+                        $("#upt_success").text(response['errorMessage']);
+                        $("#upt_success").show();
+
+                    }
+                    else {
+                        $("#upt_success").hide();
+                        $("#upt_error").text(response['errorMessage']);
+                        $("#upt_error").show();
+                    }
+                })
+                .fail(function () {
+                    $("#upt_success").hide();
+                    $("#upt_error").text("Something Went Wrong!");
+                    $("#upt_error").show();
+                });
+        });
     </script>
 </body>
 
