@@ -163,6 +163,32 @@
 
             }
         })
+
+
+        $("#update_btn").click(function () {
+            $("#update_btn").hide();
+            $("#save_all_btn").show();
+
+            $(".editable").each(function () {
+                var value = $(this).text();
+                var types = $(this).data('type');
+                if (types != 'gender') {
+                    var html_data = "<input type='text' name='" + types + "'  class='form-control input_" + types + " input_data' value='" + value + "'>";
+                    $(this).html(html_data);
+                }
+                else {
+                    var html_data = "<select name='" + types + "'  class='form-control input_" + types + " input_data'>";
+                    if (value == "Male") {
+                        html_data += "<option selected>Male</option><option>Female</option>";
+                    }
+                    else {
+                        html_data += "<option>Male</option><option selected>Female</option>";
+                    }
+                    html_data += "</select>";
+                    $(this).html(html_data);
+                }
+            });
+        });
     </script>
 </body>
 
